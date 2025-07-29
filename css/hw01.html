@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  
+  <title>민재의 포트폴리오</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .container {
+      width: 1000px;
+      margin: 0 auto;
+      background-color: #f9f5e9;
+    }
+    .header {
+      width: 100%;
+      height: 100px;
+      background-color: cornflowerblue;
+      color: white;
+      text-align: center;
+      padding-top: 50px;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .nav {
+      background-color: blueviolet;
+      padding: 15px;
+      text-align: center;
+    }
+    .nav a {
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      margin: 0 20px;
+      font-weight: bold;
+    }
+    .nav a:hover {
+      background-color: bisque;
+      color: black;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .section {
+      padding: 30px;
+      line-height: 1.6;
+    }
+    .skills ul, .projects ul, .current ul {
+      margin-left: 20px;
+      padding-left: 0;
+      list-style-position: inside;
+    }
+    .projects h4 {
+      margin-bottom: 5px;
+      margin-top: 20px;
+      color: #333;
+    }
+    .footer {
+      background-color: blueviolet;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      clear: both;
+    }
+    li {
+      margin: 12px 0;;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    민재의 포트폴리오
+  </div>
+
+  <div class="nav">
+    <a href="#about">About Me</a>
+    <a href="#now">Now</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="section" id="about">
+    <h2>👋 About Me</h2>
+    <p>
+      안녕하세요! 저는 평범한 프로그래머 지망생 <b>송민재</b>입니다.<br>
+      충남대학교 컴퓨터 공학을 전공하였으며 <b>네트워크, 시스템, 보안, 임베디드</b>까지 여러 분야를 학습,<br>  
+      이를 통해 통합적인 환경에서 프로그램 개발하는 능력을 갖추었습니다.<br>
+      사용자 중심의 개발과 문제 해결을 목표로 하며, 항상 더 나은 방향을 고민하기 위해 노력합니다.
+    </p>
+  </div>
+
+  <div class="section now" id="now">
+    <h2>📚 Now</h2>
+    <ul>
+      <li>자바 스프링 백엔드 개발자 양성과정
+        <ul>
+          <li>Java 기초</li>
+          <li>DB 설계 및 연동(MySQL)</li>
+          <li>Java AWT, Swing</li>
+          <li>HTML, CSS</li>
+        </ul>
+      </li>
+      <br>
+      <li>정보처리기사 실기 시험 준비중</li>
+    </ul>
+  </div>
+
+  <div class="section skills" id="skills">
+    <h2>🛠️ Skills</h2>
+    <ul>
+      <li><strong>Language:</strong> Java, C, Python, JavaScript</li>
+      <li><strong>Web:</strong> HTML, CSS, JSP</li>
+      <li><strong>Database:</strong> MySQL</li>
+      <li><strong>Security:</strong> 시스템/네트워크 보안, 정보보안</li>
+      <li><strong>Embedded:</strong> STM32, Embedded C, UART</li>
+      <li><strong>Tools:</strong> Eclipse, VSCode, Git, Wireshark</li>
+    </ul>
+  </div>
+
+  <div class="section projects" id="projects">
+    <h2>📂 Projects</h2>
+
+    <h4>🔐 Starlink 보안 연구</h4>
+    <p>
+      위성 통신의 취약점을 분석한 졸업 작품으로, 실제 Starlink 단말을 활용하여 
+      패킷 캡처 및 무선 통신 환경 분석을 수행했습니다.
+    </p>
+    <ul>
+      <li>사용 기술: Python, Wireshark, Starlink 터미널</li>
+      <li>역할: 무선 패킷 수집, 공격 시나리오 설계 및 발표</li>
+      <li><a href="./hw01_1.html">설계내용 요약</a></li>
+    </ul><br>
+    
+    <h4>🧹 임베디드 로봇청소기</h4>
+    <p>
+      "ARM Cortex-M4" 기반 로봇청소기 자율 주행 로직을 설계하고 OLED 디스플레이와 버튼 UI를 구현하였습니다.
+    </p>
+    <ul>
+      <li>사용 기술: Embedded C, STM32CubeIDE, OLED, 버튼 입력</li>
+      <li>역할: 자율 주행 로직 설계 및 UI 프로그래밍 구현</li>
+    </ul><br>
+
+    <h4>📧 AI 이메일 분류기</h4>
+    <p>
+      사용자 이메일을 분석하고 스팸 여부를 판단하는 AI 시스템 구현하였습니다.
+    </p>
+    <ul>
+      <li>사용 기술: HTML UI, JavaScript</li>
+      <li>역할: 알고리즘 구현, 시각화 UI 연동</li>
+    </ul>
+  </div>
+
+  <div class="section" id="contact">
+    <h2>📞 Contact</h2>
+    <p><strong>Email:</strong> <a href="mailto:minjae1229@naver.com">minjae1229@naver.com</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/minjae1229" target="_blank">https://github.com/minjae1229</a></p>
+    <p><strong>Blog:</strong> <a href="null" target="_blank">minjae.com</a></p>
+  </div>
+
+  <div class="footer">
+    ⓒ 2025 Song Minjae. All rights reserved.
+  </div>
+</div>
+</body>
+</html>

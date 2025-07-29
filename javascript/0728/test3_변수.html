@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test3.html</title>
+  <script>
+    // 'use strict'; // 변수를 사용하려면 반드시 선언하도록 함.
+
+    atom = 100; // 변수 선언하지 않고 사용 -> 위에 use strict에 의해 에러 발생.
+    document.write("atom : " + atom); // 본문영역에 해당하므로 이런 방식으로 사용하지 않음.
+    console.log("atom : ", atom);
+    
+    // 변수 선언(타입x)
+    var mbc = 200;
+    console.log("mbc : ", mbc);
+
+    let kbs = 300;
+    console.log("kbs : ", kbs);
+
+    const sbs = 400;
+    console.log("sbs : ", sbs)
+    // let과 const에 대해서는 한번 선언한 변수에 대해 재 선언을 제한함.
+
+    var mbc = 3.14;
+    document.write("<br>mbc : " + mbc);
+    console.log("mbc : ", mbc);
+
+    // let kbs = 3.14;
+    kbs = 3.14;
+    document.write("<br>kbs : " + kbs);
+    console.log("kbs : ", kbs);
+    
+    // sbs는 const로 선언했기 때문에 상수값이므로 변경이 불가하다.
+    // sbs = 3.14;
+    document.write("<br>sbs : " + sbs);
+    console.log("sbs : ", sbs);
+
+    // 'use strict';
+    cjb = 500;
+    document.write("<br>cjb : " + cjb);
+    console.log("cjb : ", cjb);
+
+  </script>
+</head>
+<body>
+  <h3>이곳은 본문 영역입니다.</h3>
+</body>
+</html>
