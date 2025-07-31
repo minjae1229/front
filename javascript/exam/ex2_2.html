@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달력 만들기</title>
+  <style>
+    table { border-collapse: collapse; width: 500px; }
+    th, td {
+      border: 1px solid #000;
+      text-align: center;
+      padding: 5px;
+    }
+    th { background-color: #ddd;}
+    td.empty { background-color: gray;}
+  </style>
+
+  <script>
+    function makeCalendar() {
+      let year = parseInt(document.getElementById('year').value);
+      let month = parseInt(document.getElementById('month').value);
+
+      if(month < 1 || month > 12){
+        alert('1~12 사이의 월을 입력하세요.');
+        return;
+      }
+
+      // 선택한 월의 첫날 요일 구하기
+      let firstDate = new Date(year, month-1, 1);
+      let firstDay = firstDate.getDay();
+
+      // 마지막 일 구하기
+      let lastDate = new Date(year, month, 0).getDate();
+
+      let CalendarTable = '<table><tr>';
+      let weekDays = ['일','월','화','수','목','금','토'];
+
+
+      // 요일 헤더
+      for(let i=0; i<weekDays.length; i++){
+        CalendarTable += '<th>' + weekDays[i] + '</th>';
+      }
+      CalendarTable += '</tr><tr>';
+      
+      // 첫번째 주 빈칸 넣기
+      for(let i=0; i<firstDay; i++){
+        CalendarTable += `<td class="empty"></td>`;
+      }
+
+      let count = firstDay;
+      // 날짜 채우기
+      for(let day=1; day<=lastDate; day++){
+        let color = '';
+        if(count % 7 === 0) color = 'style="color:red;"'; // 일
+        else if(count % 7 === 6) color = 'style="color:blue;"'; // 토
+
+        CalendarTable += `<td ${color}>${day}</td>`;
+        count++;
+
+        // 7칸 채우면 줄바꿈, 마지막 날짜는 줄바꿈 하지 않음.
+        if(count % 7 == 0 && day != lastDate) {
+          CalendarTable += '</tr><tr>';
+        }
+      }
+
+      // 마지막 빈칸 넣기
+      while(count % 7 != 0){
+        CalendarTable += '<td class="empty"></td>';
+        count++;
+      }
+
+      CalendarTable += '</tr></table>';
+
+      document.getElementById('demo').innerHTML = CalendarTable;
+    }
+  </script>
+</head>
+
+<body>
+  <h2>달력 만들기</h2>
+  <!--input-->
+  <label for="year">년도:</label>
+  <input type="number" id="year" value="2025">
+  <label for="month">월:</label>
+  <input type="number" id="month" value="7" min="1" max="12">
+  <button onclick="makeCalendar()">달력 보기</button>
+
+  <!--output-->
+  <div id="demo"></div>
+</body>
+</html>

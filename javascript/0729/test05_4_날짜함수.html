@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test05_4.html</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    'use strict';
+
+    let today = new Date();
+
+    function dateInput() {
+      let year = today.getFullYear();
+      let month = today.getMonth()+1;
+      let date = today.getDate();      
+
+      // 년
+      let str ='';
+      for(let i=2010; i<=2026; i++){
+        if(year == i) str += `<option selected>${year}</option>`;
+        else str += `<option>${i}</option>`;
+      }
+      yyyy.innerHTML = str;
+      // 월
+      str='';
+      for(let i=1; i<=12; i++){
+        if(month == i) str += `<option selected>${month}</option>`;
+        else str += `<option>${i}</option>`;
+      }
+      mm.innerHTML = str;
+      // 일
+      str='';
+      for(let i=1; i<=31; i++){ // 31 대신에 lastDate를 사용하는 방법도 있긴 한데 굳이 의문....
+        if(date == i) str += `<option selected>${date}</option>`;
+        else str += `<option>${i}</option>`;
+      }
+      dd.innerHTML = str;
+    }
+    // 년도 선택시 해당 년도를 콤보상자에 표시
+    function yearCheck() {
+      const yyyy = document.getElementById("yyyy");
+      const yyyyValue = yyyy.value;
+      yyyy.innerHTML = "";
+      for(let i=2010; i<=2026; i++) {
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.text = i;
+        if(yyyyValue == i) opt.selected = true;
+        yyyy.appendChild(opt);
+      }
+    }
+
+    // 월 선택시 해당 월을 콤보상자에 표시
+    function monthCheck() {
+      const yyyy = document.getElementById("yyyy").value;
+      if(isNaN(yyyy)){
+        alert("년도를 선택하세요");
+        return false;
+      }
+
+      const mm = document.getElementById("mm");
+      const mmValue = mm.value;
+      mm.innerHTML = "";
+      for(let i=1; i<=12; i++) {
+        let opt = document.createElement("option");
+        opt.value = i;
+        opt.text = i;
+        if(mmValue == i) opt.selected = true;
+        mm.appendChild(opt);
+      }
+    }
+
+    // 월을 선택하면 해당 년, 월에 해당하는 1일부터 마지막 일까지를 콤보상자에 출력
+    function monthChange() {
+      const yyyy = document.getElementById("yyyy").value;
+      const mm = document.getElementById("mm").value;
+
+      let lastDate = new Date(yyyy, mm, 0).getDate();
+
+      let str ='';
+      for(let i=1; i<=lastDate; i++) {
+        str += `<option>${i}</option>`;
+      }
+      dd.innerHTML = str;
+    }
+
+    // 날짜 선택시 '년도, 월'이 선택되어 있어야 날짜 계산 가능
+    function dateCheck(){
+      const yyyy = document.getElementById("yyyy").value;
+      const mm = document.getElementById("mm").value;
+      if(isNaN(yyyy)){
+        alert("년도를 선택하세요");
+        return false;
+      }
+      else if(isNaN(mm)){
+        alert("월을 선택하세요");
+        return false;
+      }
+    }
+
+    // 일 선택시 해당 일을 콤보상자에 표시
+
+    function calcDate() {
+      const yyyy = document.getElementById("yyyy").value;
+      let mm = document.getElementById("mm").value;
+      const dd = document.getElementById("dd").value;
+
+      if(isNaN(yyyy)){
+        alert("년도를 선택하세요");
+        return false;
+      }
+      else if(isNaN(mm)){
+        alert("월을 선택하세요");
+        return false;
+      }
+      else if(isNaN(dd)){
+        alert("일을 선택하세요");
+        return false;
+      }
+
+      const nalsu = parseInt(document.getElementById("nalsu").value);
+      mm = Number(mm) - 1;
+
+      let NewDate = new Date(yyyy,mm,dd);
+      NewDate.setDate(NewDate.getDate() + nalsu);
+
+      let strDate = today.getFullYear() + '-' +
+        ((NewDate.getMonth() + 1) <= 9 ? "0" + (NewDate.getMonth() + 1) : (NewDate.getMonth() + 1)) + '-' +
+        (NewDate.getDate() <= 9 ? "0" + NewDate.getDate() : NewDate.getDate());
+
+      demo.innerHTML = `계산된 날짜 : <font color="red"><b>${strDate}</b></font>`;
+    }
+  </script>
+</head>
+
+<body>
+  <p><br></p>
+  <div class="container">
+    <h3 class="mb-3">날짜 함수 연습</h3>
+    <hr>
+    <div class="input-group">
+      <select name="yyyy" id="yyyy" class="form-control" onclick="yearCheck()">
+        <option>년도 선택</option>
+      </select>
+      <div class="input-group-text">-</div>
+      <select name="mm" id="mm" class="form-control" onclick="monthCheck()" onchange="monthChange()"">
+        <option>월 선택</option>
+      </select>
+      <div class="input-group-text">-</div>
+      <select name="dd" id="dd" class="form-control" onclick="dateCheck">
+        <option value="">일 선택</option>
+      </select>
+      <input type="button" value="오늘 날짜넣기" onclick="dateInput()" class="btn btn-success ms-2" />
+      <input type="button" value="새로고침" onclick="location.reload()" class="btn btn-warning" />
+    </div>
+
+    <hr>
+    <div class="input-group">
+      <div class="input-group-text">계산할 숫자</div>
+      <input type="text" name="nalsu" id="nalsu" value="5"  class="form-control"/>
+      <input type="button" value="날짜계산" onclick="calcDate()" class="btn btn-primary"/>
+    </div>
+    <hr>
+    <div id="demo"></div>
+  </div>
+</body>
+</html>
