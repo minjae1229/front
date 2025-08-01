@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>t01_basic.html</title>
+  <!--jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!--bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    'use strict';
+    // javascript 문법과 jquery 문법의 차이점
+    // javascript 문법 : document.getElementById('product').value;  
+    // jquery 문법 : $('#product').val();
+    $(function() {
+      // jquery 문법 : $(선택자).이벤트(function() { ... });
+      let product = "<font color='blue'>" +$('#product').val()+"</font>";
+      // $('#demo').html(product);
+      $('#demo').text(product);
+
+      // $("#calcBtn").click(function() {
+      //   $('#demo').html(product);
+      // });
+      $('#calcBtn').on('click', function() {
+        $('#demo').html(product);
+      });
+
+    });
+    
+
+    function fCheck() {
+      alert("fCheck() 함수 호출됨");
+      document.getElementById("demo").innerHTML = document.getElementById("product").value;
+      // $("#demo").html = $("#product").val(); // jquery 블록 밖에서는 사용 불가
+    }
+  
+
+  </script>
+</head>
+<body>
+  <p><br></p>
+  <div class="container">
+    <h3>jQuery 사용법</h3>
+    <form name="myform">
+      <div>상품명
+        <input type="text" name="product" id="product" value="냉장고" autofocus class="form-control mb-3"/>
+      </div>
+      <div>상품가격
+        <input type="number" name="price" id="price" value="10000" class="form-control mb-3"/>
+      </div>
+      <div>구매수량
+        <input type="number" name="su" id="su" value="2" class="form-control mb-3"/>
+      </div>
+      <div>구매수량
+        <input type="button" id="calcBtn" onclick="fCheck()" value="계산하기" class="btn btn-success form-control"/>
+      </div>
+    </form>
+    <hr>
+    <div id="demo"></div>
+  </div>
+</body>
+</html>

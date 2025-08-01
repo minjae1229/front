@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>7-segment 디지털 시계</title>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      margin: 0;
+      justify-content: center;
+      align-items: center;
+      background: #111;
+      font-family: monospace;
+    }
+
+    .clock-container {
+      display: flex;
+      gap: 12px;
+      background: #222;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #f00;
+    }
+
+    .digit {
+      width: 60px;
+      height: 100px;
+      display: inline-block;
+    }
+
+    table.seven-seg {
+      border-collapse: collapse;
+      width: 100%;
+      height: 100%;
+      table-layout: fixed;
+    }
+
+    table.seven-seg td {
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      border: none;
+      position: relative;
+    }
+
+    /* 공통 세그먼트 스타일 */
+    .segment {
+      opacity: 0.1;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+    }
+
+    .segment.on {
+      background-color: #ff3333;
+      opacity: 1;
+      box-shadow: 0 0 8px #ff3333;
+    }
+
+    /* 각 세그먼트 위치 및 크기 조정 */
+    .segment.a {
+      position: absolute;
+      top: 0;
+      left: 10%;
+      width: 80%;
+      height: 10%;
+      border-radius: 5px;
+    }
+
+    .segment.b {
+      position: absolute;
+      top: 5%;
+      right: 0;
+      width: 10%;
+      height: 45%;
+      border-radius: 5px;
+    }
+
+    .segment.c {
+      position: absolute;
+      bottom: 5%;
+      right: 0;
+      width: 10%;
+      height: 45%;
+      border-radius: 5px;
+    }
+
+    .segment.d {
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 10%;
+      border-radius: 5px;
+    }
+
+    .segment.e {
+      position: absolute;
+      bottom: 5%;
+      left: 0;
+      width: 10%;
+      height: 45%;
+      border-radius: 5px;
+    }
+
+    .segment.f {
+      position: absolute;
+      top: 5%;
+      left: 0;
+      width: 10%;
+      height: 45%;
+      border-radius: 5px;
+    }
+
+    .segment.g {
+      position: absolute;
+      top: 45%;
+      left: 10%;
+      width: 80%;
+      height: 10%;
+      border-radius: 5px;
+    }
+
+    .colon {
+      color: #ff3333;
+      font-size: 60px;
+      line-height: 100px;
+      /* user-select: none; */
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container" id="clock"></div>
+
+  <script>
+    // 7-seg 숫자 HTML 생성
+    function createDigitElement() {
+      const digitDiv = document.createElement('div');
+      digitDiv.classList.add('digit');
+      digitDiv.innerHTML = `
+        <table class="seven-seg">
+          <tr><td>
+            <div class="segment a"></div>
+            <div class="segment b"></div>
+            <div class="segment c"></div>
+            <div class="segment d"></div>
+            <div class="segment e"></div>
+            <div class="segment f"></div>
+            <div class="segment g"></div>
+          </td></tr>
+        </table>
+      `;
+      return digitDiv;
+    }
+
+    // 숫자별 세그먼트 매핑
+    const numberToSegments = {
+      0: ['a','b','c','d','e','f'],
+      1: ['b','c'],
+      2: ['a','b','g','e','d'],
+      3: ['a','b','c','d','g'],
+      4: ['f','g','b','c'],
+      5: ['a','f','g','c','d'],
+      6: ['a','f','e','d','c','g'],
+      7: ['a','b','c'],
+      8: ['a','b','c','d','e','f','g'],
+      9: ['a','b','c','d','f','g']
+    };
+
+    function setDigit(digitElement, num) {
+      const all = digitElement.querySelectorAll('.segment');
+      all.forEach(seg => {
+        seg.classList.remove('on');
+      });
+      const segments = numberToSegments[num] || [];
+      segments.forEach(s => {
+        const seg = digitElement.querySelector(`.segment.${s}`);
+        if (seg) seg.classList.add('on');
+      });
+    }
+
+    const clockContainer = document.getElementById('clock');
+    const digits = [];
+
+    for (let i = 0; i < 6; i++) {
+      const digit = createDigitElement();
+      digits.push(digit);
+    }
+
+    function createColon() {
+      const colon = document.createElement('div');
+      colon.className = 'colon';
+      colon.textContent = ':';
+      return colon;
+    }
+
+    // 시계 구성
+    clockContainer.appendChild(digits[0]);
+    clockContainer.appendChild(digits[1]);
+    clockContainer.appendChild(createColon());
+    clockContainer.appendChild(digits[2]);
+    clockContainer.appendChild(digits[3]);
+    clockContainer.appendChild(createColon());
+    clockContainer.appendChild(digits[4]);
+    clockContainer.appendChild(digits[5]);
+
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+
+      setDigit(digits[0], parseInt(hh[0]));
+      setDigit(digits[1], parseInt(hh[1]));
+      setDigit(digits[2], parseInt(mm[0]));
+      setDigit(digits[3], parseInt(mm[1]));
+      setDigit(digits[4], parseInt(ss[0]));
+      setDigit(digits[5], parseInt(ss[1]));
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
