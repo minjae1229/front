@@ -13,7 +13,6 @@
     function priceCalc() {
       if(blankCheck()) {
         let price = myform.price.value * myform.ea.value;
-        //price = numberWithCommas(price)
         demo1.innerHTML = numberWithCommas(price) + "원";
       }
     }
@@ -86,13 +85,64 @@
       demo1.innerHTML = "";
       demo2.innerHTML = "";
       demo3.innerHTML = "";
-      demoCart.innerHTML = "";
+      //demoCart.innerHTML = "";
     }
 
     // 콤마 변환함수(1,234)
     function numberWithCommas(num) {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
     }
+
+    let cartTotalSum = 0;
+
+    // cartSend() 구현
+    function cartSend() {
+      if(!blankCheck()) return;
+
+      const productName = document.getElementById("product").value; // 상품명
+
+      const priceSelect = document.getElementById("price"); // 가격
+      const selectedIndex = priceSelect.selectedIndex;  // 해당 인덱스
+      const priceText = priceSelect.options[selectedIndex].text; // 해당 텍스트
+      const unitPrice = parseInt(priceSelect.value); // 단가
+
+      const ea = parseInt(document.getElementById("ea").value); // 수량
+
+      const price = unitPrice * ea; // 가격
+      const vat = price * 0.1;      // vat
+      const total = price + vat;    // 총합계
+
+      // 누적 총합 계산
+      cartTotalSum += total;
+
+      const html = `
+
+      <div class="border p-2 mt-2">
+        <strong>${productName}</strong> (${priceText})<br/>
+        수량: ${ea}개<br/>
+        가격: ${numberWithCommas(price)}원<br/>
+        VAT(10%): ${numberWithCommas(vat)}원<br/>
+        합계: <span class="text-danger fw-bold">${numberWithCommas(total)}원</span>
+      </div>
+    `;
+    
+    demoCart.innerHTML += html;
+  
+  // 이전 최종 합계 제거
+  const existTotalDiv = document.getElementById("finalTotal");
+  if(existTotalDiv){
+    existTotalDiv.remove();
+  }
+
+  const totalDiv = document.createElement("div");
+  totalDiv.id = "finalTotal";
+  totalDiv.className = "finalTotal mt-4 mb-4 p-3 border border-dark text-end fw-bold bg-light";
+  totalDiv.style.fontSize = "1.5rem";
+  totalDiv.innerHTML = `최종 결제금액 : ${numberWithCommas(cartTotalSum)}원`;
+  
+  demoCart.appendChild(totalDiv);
+
+  }
   </script>
 </head>
 <body>
@@ -140,15 +190,15 @@
     
     <div class="mt-2 p-2 border" id="demoProduct">
       <div class="row mb-1">
-        <div class="col ml-4">☞ 가격(단가*수량) : </div>
+        <div class="col ml-4">가격(단가*수량) : </div>
         <div class="col" id="demo1"></div>
       </div>
       <div class="row mb-1">
-        <div class="col ml-4">☞ VAT(가격의 10%) : </div>
+        <div class="col ml-4">VAT(가격의 10%) : </div>
         <div class="col" id="demo2"></div>
       </div>
       <div class="row">
-        <div class="col ml-4">☞ 총판매가격(VAT포함) : </div>
+        <div class="col ml-4">총판매가격(VAT포함) : </div>
         <div class="col" id="demo3"></div>
       </div>
     </div>

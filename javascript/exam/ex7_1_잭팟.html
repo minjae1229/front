@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jackpot Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .all-images {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .all-images > div {
+      display: flex;
+      /* 이미지 아래에 텍스트를 위치 */
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .all-images img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border: 1px solid #ccc;
+      padding: 5px;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .slot-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .slot {
+      width: 120px;
+      height: 120px;
+      border: 2px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eee;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    input[type="number"] {
+      width: 150px;
+      padding: 5px;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      text-align: right;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: green;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: darkgreen;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>JACKPOT GAME</h1>
+
+  <div class="all-images">
+    <div>
+      <img src="../../images/1.jpg" data-payout="10" alt="1번 그림">
+      <div>배당: 10</div>
+    </div>
+    <div>
+      <img src="../../images/2.jpg" data-payout="20" alt="2번 그림">
+      <div>배당: 20</div>
+    </div>
+    <div>
+      <img src="../../images/3.jpg" data-payout="30" alt="3번 그림">
+      <div>배당: 30</div>
+    </div>
+    <div>
+      <img src="../../images/4.jpg" data-payout="40" alt="4번 그림">
+      <div>배당: 40</div>
+    </div>
+    <div>
+      <img src="../../images/5.jpg" data-payout="50" alt="5번 그림">
+      <div>배당: 50</div>
+    </div>
+    <div>
+      <img src="../../images/7.jpg" data-payout="60" alt="7번 그림">
+      <div>배당: 60</div>
+    </div>
+  </div>
+
+  <div class="slot-container">
+    <div class="slot" id="slot1"></div>
+    <div class="slot" id="slot2"></div>
+    <div class="slot" id="slot3"></div>
+  </div>
+
+  <label>배팅할 금액을 입력하세요: <input type="number" id="betAmount" value="10000" min="1" step="1"></label><br>
+  <button onclick="playJackpot()">잭팟을 돌려주세요</button>
+
+  <div id="result"></div>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    const betInput = document.getElementById('betAmount');
+    const slots = ['slot1', 'slot2', 'slot3'];
+
+    function playJackpot() {
+      const bet = parseInt(betInput.value);
+      if (!Number.isInteger(bet) || bet <= 0) {
+        resultDiv.style.color = 'red';
+        resultDiv.innerText = '유효한 배팅 금액을 입력하세요.';
+        betInput.focus();
+        return;
+      }
+
+      const images = document.querySelectorAll('.all-images img');
+      const finalImages = [null, null, null];
+      let stoppedCount = 0;
+      resultDiv.style.color = 'black';
+      resultDiv.innerText = '돌리는 중...';
+
+      let intervals = [];
+
+      for (let i = 0; i < 3; i++) {
+        const slotId = slots[i];
+        intervals[i] = setInterval(() => {
+          const randIdx = Math.floor(Math.random() * images.length);
+          const selectedImg = images[randIdx];
+          finalImages[i] = selectedImg;
+          document.getElementById(slotId).innerHTML = `<img src="${selectedImg.src}" alt="슬롯 이미지">`;
+        }, 100);
+
+        setTimeout(() => {
+          clearInterval(intervals[i]);
+          stoppedCount++;
+          if (stoppedCount === 3) {
+            showResult(finalImages, bet);
+          }
+        }, 800 + i * 400);
+      }
+    }
+
+    function showResult(images, bet) {
+      let payout = 0;
+      let resultText = '';
+
+      const src0 = images[0].src;
+      const src1 = images[1].src;
+      const src2 = images[2].src;
+
+      const payout0 = parseInt(images[0].getAttribute('data-payout'));
+      const payout1 = parseInt(images[1].getAttribute('data-payout'));
+      const payout2 = parseInt(images[2].getAttribute('data-payout'));
+
+      if (src0 === src1 && src1 === src2) {
+        payout = bet * payout0;
+        resultText = `🎉 3개 일치! 배당금: ${payout.toLocaleString()}원`;
+        resultDiv.style.color = 'purple';
+      } else if (src0 === src1 || src0 === src2) {
+        payout = bet * 0.1 * payout0;
+        resultText = `✨ 1번과 일치! 배당금: ${Math.floor(payout).toLocaleString()}원`;
+        resultDiv.style.color = 'blue';
+      } else if (src1 === src2) {
+        payout = bet * 0.05 * payout1;
+        resultText = `✨ 2번과 3번 일치! 배당금: ${Math.floor(payout).toLocaleString()}원`;
+        resultDiv.style.color = 'blue';
+      } else {
+        resultText = `😢 일치하는 그림이 없습니다. 배팅금액 ${bet.toLocaleString()}원 손실.`;
+        resultDiv.style.color = 'red';
+      }
+
+      resultDiv.innerText = resultText;
+    }
+  </script>
+</body>
+</html>
